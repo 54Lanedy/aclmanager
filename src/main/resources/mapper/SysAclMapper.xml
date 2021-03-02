@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hjc.aclmanager.mapper.SysAclMapper">
+
+
+    <select id="searchAclByModuleId" resultType="com.hjc.aclmanager.vo.SysAclVO" parameterType="map" >
+        select b.*,a.name as aclModuleName
+        from sys_acl_module a,sys_acl b
+        where b.acl_module_id = a.id
+        <if test="aclModuleId != null">
+            and b.acl_module_id=#{aclModuleId}
+        </if>
+    </select>
+
+    <select id="countByNameAndAclModuleId" parameterType="map" resultType="int">
+        SELECT count(1)
+        FROM sys_acl
+        WHERE acl_module_id = #{aclModuleId}
+        AND name = #{name}
+        AND parent_id = #{parentId}
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+    </select>
+    <select id="getAclsByRoleIds" resultType="com.hjc.aclmanager.entity.SysAcl" parameterType="map">
+        select *
+        from sys_acl a , sys_role_acl b
+        where a.id=b.acl_id
+        and b.role_id in
+        <foreach collection="roleIds" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </select>
+</mapper>

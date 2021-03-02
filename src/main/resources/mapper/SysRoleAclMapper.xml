@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hjc.aclmanager.mapper.SysRoleAclMapper">
+
+    <insert id="batchInsert" parameterType="map">
+        insert into sys_role_acl
+        (id, role_id, acl_id,operator, operator_time, operator_ip)
+        values
+        <foreach collection="roleAclList" item="roleAcl" separator=",">
+            ( #{roleAcl.id}, #{roleAcl.roleId}, #{roleAcl.aclId}, #{roleAcl.operator}, #{roleAcl.operatorTime}, #{roleAcl.operatorIp})
+        </foreach>
+    </insert>
+
+    <select id="getAclIdListByRoleIdList" parameterType="map" resultType="string">
+        select acl_id
+        from  sys_role_acl
+        where role_id in
+        <foreach collection="userRoleIdList" item="roleId" open="(" close=")" separator=",">
+            #{roleId}
+        </foreach>
+    </select>
+</mapper>

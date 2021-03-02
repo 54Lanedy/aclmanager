@@ -1,0 +1,79 @@
+###################  项目启动端口  ###################
+server:
+  port: 8089
+  servlet:
+    context-path: /aclmanager
+
+###################  spring配置  ###################
+spring:
+  application:
+    name: aclManager
+  # 字符编码
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+  freemarker:
+    allow-request-override: false
+    cache: false
+    check-template-location: true
+    charset: UTF-8
+    content-type: text/html; charset=utf-8
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false
+    suffix: .ftl
+    template-loader-path: classpath:/templates
+    settings:
+      number_format: '0.##'
+  datasource:
+    dynamic:
+      primary: db1 # 配置默认数据库
+      datasource:
+#        db1: # 数据源1配置
+#          driver-class-name: com.mysql.jdbc.Driver
+#          url: jdbc:mysql://192.168.15.40:3306/acl_manager_db?characterEncoding=utf8&useUnicode=true&useSSL=false
+#          username: root
+#          password: 2911
+#        db2: # 数据源2配置
+#          driver-class-name: com.mysql.jdbc.Driver
+#          url: jdbc:mysql://192.168.10.254:3306/oa_hj_db?characterEncoding=utf8&useUnicode=true&useSSL=false
+#          username: root
+#          password: 2911
+        db1: # 数据源1配置(test)
+            driver-class-name: com.mysql.jdbc.Driver
+            url: jdbc:mysql://localhost:3306/acl_manager_db?characterEncoding=utf8&useUnicode=true&useSSL=false
+            username: root
+            password: root
+        db2: # 数据源2配置(test)
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/oa_hj_db?characterEncoding=utf8&useUnicode=true&useSSL=false
+          username: root
+          password: root
+      durid:
+        initial-size: 10
+        max-active: 50
+        min-idle: 1
+        max-wait: 60000
+# Mybatis-plus相关配置
+mybatis-plus:
+  #mapper.xml扫描，多个目录用逗号分隔。--
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      #主键生成策略：AUTO:"数据库ID自增" INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: uuid
+      #数据库类型
+      db-type: mysql
+  configuration:
+    #是否开启自动驼峰名命规则映射
+    map-underscore-to-camel-case: true
+    #返回map时true：当查询的数据为空时字段返回null；false：空字段将被隐藏
+    call-setters-on-nulls: true
+    #打印sql，开发或者测试中使用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    auto-mapping-behavior: full
+logging:
+  config: classpath:logback.xml
+  path: e:/pfmc-logs
